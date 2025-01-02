@@ -1,5 +1,9 @@
-import { BelongsTo, Column, DataType, Default, ForeignKey, Model, Table } from "sequelize-typescript";
-import Rol from "./rol.model";
+import { BelongsTo, Column, DataType, Default, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
+import Rol from "./rol";
+import TeachersAcademicCourses from "./teachers_academic_courses";
+import StudentsGroups from "./students_groups";
+import TeachersGroupsAcademicCourses from "./teachers_groups_academic_courses";
+import TasksAcademicCoursesStudents from "./tasks_academic_courses_students";
 const userStatus = ['active', 'inactive'] as const;
 
 @Table({
@@ -15,7 +19,8 @@ class User extends Model {
 
     @Column({
         type: DataType.STRING(200),
-        allowNull: false
+        allowNull: false,
+        unique: true,
     })
     email: string;
 
@@ -53,6 +58,18 @@ class User extends Model {
 
     @BelongsTo(() => Rol)
     rol: Rol;
+
+    @HasMany(() => TeachersAcademicCourses)
+    teachers_academic_courses: TeachersAcademicCourses[];
+
+    @HasMany(() => StudentsGroups)
+    students_groups: StudentsGroups[];
+
+    @HasMany(() => TeachersGroupsAcademicCourses)
+    teachers_groups_academic_courses: TeachersGroupsAcademicCourses[];
+
+    @HasMany(() => TasksAcademicCoursesStudents)
+    tasks_academic_courses_students: TasksAcademicCoursesStudents[];
 }
 
 export default User;
